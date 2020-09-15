@@ -10,7 +10,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class HomeManager implements ItemManager{
+public class HomeManager implements ItemManager {
     private Scanner in = new Scanner(System.in);
     private HomeService homeService = new HomeService();
 

@@ -4,7 +4,6 @@ import model.Home;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import util.HibernateSessionFactory;
 
 import java.util.List;
