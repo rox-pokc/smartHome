@@ -23,18 +23,14 @@ public class UserManager {
     }
 
     public User registration() throws UserManagementException {
-        Map<String, String> userFields = userForm();
-        try {
-            checkValidUserFields(userFields);
-        } catch (UserManagementException exception) {
-            System.out.println(exception.getMessage());
-            registration();
-        }
-        User user = new User();
-        user.setLogin(userFields.get("login"));
-        user.setPassword(String.valueOf(userFields.get("password").hashCode()));
-        user.setName(userFields.get("name"));
-        user.setAge(Integer.parseInt(userFields.get("age")));
+        HashMap<String, String> userFields = userForm();
+        checkValidUserFields(userFields);
+        User user = new User(
+                userFields.get("login"),
+                String.valueOf(userFields.get("password").hashCode()),
+                userFields.get("name"),
+                Integer.parseInt(userFields.get("age"))
+        );
         return userService.registration(user);
     }
 
@@ -46,7 +42,7 @@ public class UserManager {
     }
 
     public User updateUser(User user) throws UserManagementException {
-        Map<String, String> userFields = userForm();
+        HashMap<String, String> userFields = userForm();
         checkValidUserFields(userFields);
         user.setLogin(userFields.get("login"));
         user.setPassword(String.valueOf(userFields.get("password").hashCode()));
@@ -73,7 +69,7 @@ public class UserManager {
         return userFields;
     }
 
-    private void checkValidUserFields(Map<String, String> _userFields) throws UserManagementException{
+    private void checkValidUserFields(HashMap<String, String> _userFields) throws UserManagementException{
         if (_userFields.get("password").length() < 6) {
             throw new UserManagementException("Password should contain at least 6 symbols!");
         }

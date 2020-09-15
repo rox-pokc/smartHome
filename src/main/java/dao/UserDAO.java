@@ -7,6 +7,8 @@ public interface UserDAO {
 
     User findByCredentials(String login, String password);
 
+    User findUserWithSimilarLogin(User user);
+
     void save(User user);
 
     void update(User user);

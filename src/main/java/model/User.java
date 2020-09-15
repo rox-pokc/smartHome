@@ -1,6 +1,7 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -10,9 +11,11 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("Id")
     private int id;
 
     @Column(name = "login")
+    @JsonProperty("Login")
     private String login;
 
     @Column(name = "password")
@@ -20,10 +23,21 @@ public class User {
     private String password;
 
     @Column(name = "name")
+    @JsonProperty("Name")
     private String name;
 
     @Column(name = "age")
+    @JsonProperty("Age")
     private int age;
+
+    public User(){}
+
+    public User(String login, String password, String name, int age) {
+        this.login = login;
+        this.password = password;
+        this.name = name;
+        this.age = age;
+    }
 
     public int getId() {
         return id;
