@@ -1,9 +1,8 @@
-import com.fasterxml.jackson.databind.DeserializationFeature;
+package manager;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import exception.UserManagementException;
 import model.Device;
-import org.hibernate.Hibernate;
 import service.DeviceService;
 import service.HomeService;
 
@@ -13,37 +12,41 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-public class DeviceManager {
+public class DeviceManager implements ItemManager {
     private Scanner in = new Scanner(System.in);
     private DeviceService deviceService = new DeviceService();
     private HomeService homeService = new HomeService();
 
     public DeviceManager() {}
 
-    public void listDevices() throws IOException {
+    @Override
+    public void listItems() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         StringWriter writer = new StringWriter();
         mapper.writeValue(writer, deviceService.findAll());
         System.out.println(writer.toString());
     }
 
-    public void showDevice(int id) throws IOException {
+    @Override
+    public void showItem(int id) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         StringWriter writer = new StringWriter();
         mapper.writeValue(writer, deviceService.findById(id));
         System.out.println(writer.toString());
     }
 
-    public Device createDevice() throws UserManagementException {
+    @Override
+    public int createItem() throws UserManagementException {
         HashMap<String, String> deviceFields = deviceForm();
         checkValidDeviceFields(deviceFields);
         Device device = new Device(deviceFields.get("name"), Integer.parseInt(deviceFields.get("value")));
         device.setHome(homeService.findById(Integer.parseInt(deviceFields.get("home"))));
         deviceService.create(device);
-        return device;
+        return device.getId();
     }
 
-    public void updateDevice(int id) throws UserManagementException {
+    @Override
+    public void updateItem(int id) throws UserManagementException {
         Device device = deviceService.findById(id);
         HashMap<String, String> deviceFields = deviceForm();
         checkValidDeviceFields(deviceFields);
@@ -53,7 +56,8 @@ public class DeviceManager {
         deviceService.update(device);
     }
 
-    public void deleteDevice(int id) {
+    @Override
+    public void deleteItem(int id) {
         Device device = deviceService.findById(id);
         deviceService.delete(device);
     }

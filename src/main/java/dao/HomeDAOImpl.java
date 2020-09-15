@@ -14,8 +14,10 @@ public class HomeDAOImpl implements HomeDAO {
     public List<Home> findAll() {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         List<Home> homes = (List<Home>)session.createQuery("FROM Home").list();
-        for (Home home: homes) {
-            Hibernate.initialize(home.getDevices());
+        if (!homes.isEmpty()) {
+            for (Home home : homes) {
+                Hibernate.initialize(home.getDevices());
+            }
         }
         session.close();
         return homes;
@@ -25,7 +27,9 @@ public class HomeDAOImpl implements HomeDAO {
     public Home findById(int id) {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         Home home = session.get(Home.class, id);
-        Hibernate.initialize(home.getDevices());
+        if (home != null) {
+            Hibernate.initialize(home.getDevices());
+        }
         session.close();
         return home;
     }

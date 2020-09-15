@@ -1,3 +1,5 @@
+package manager;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import exception.UserManagementException;
 import model.User;
@@ -6,7 +8,6 @@ import service.UserService;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Stream;
 

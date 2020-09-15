@@ -1,3 +1,5 @@
+package manager;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import exception.UserManagementException;
 import model.Home;
@@ -6,38 +8,37 @@ import service.HomeService;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
-public class HomeManager {
+public class HomeManager implements ItemManager{
     private Scanner in = new Scanner(System.in);
     private HomeService homeService = new HomeService();
 
     public HomeManager() {}
 
-    public void listHomes() throws IOException {
+    public void listItems() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         StringWriter writer = new StringWriter();
         mapper.writeValue(writer, homeService.findAll());
         System.out.println(writer.toString());
     }
 
-    public void showHome(int id) throws IOException {
+    public void showItem(int id) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         StringWriter writer = new StringWriter();
         mapper.writeValue(writer, homeService.findById(id));
         System.out.println(writer.toString());
     }
 
-    public Home createHome() throws UserManagementException {
+    public int createItem() throws UserManagementException {
         HashMap<String, String> homeFields = homeForm();
         checkValidHomeFields(homeFields);
         Home home = new Home(homeFields.get("name"));
         homeService.create(home);
-        return home;
+        return home.getId();
     }
 
-    public void updateHome(int id) throws UserManagementException {
+    public void updateItem(int id) throws UserManagementException {
         Home home = homeService.findById(id);
         HashMap<String, String> homeFields = homeForm();
         checkValidHomeFields(homeFields);
@@ -45,7 +46,7 @@ public class HomeManager {
         homeService.update(home);
     }
 
-    public void deleteHome(int id) {
+    public void deleteItem(int id) {
         Home home = homeService.findById(id);
         homeService.delete(home);
     }
