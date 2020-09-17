@@ -1,35 +1,30 @@
 package manager;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import exception.UserManagementException;
 import model.Home;
 import service.HomeService;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class HomeManager implements ItemManager {
+public class HomeManager extends ItemManager {
     private Scanner in = new Scanner(System.in);
     private HomeService homeService = new HomeService();
 
     public HomeManager() {}
 
+    @Override
     public void listItems() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        StringWriter writer = new StringWriter();
-        mapper.writeValue(writer, homeService.findAll());
-        System.out.println(writer.toString());
+        writeToConsole(homeService.findAll());
     }
 
+    @Override
     public void showItem(int id) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        StringWriter writer = new StringWriter();
-        mapper.writeValue(writer, homeService.findById(id));
-        System.out.println(writer.toString());
+        writeToConsole(homeService.findById(id));
     }
 
+    @Override
     public int createItem() throws UserManagementException {
         HashMap<String, String> homeFields = homeForm();
         checkValidHomeFields(homeFields);
@@ -38,6 +33,7 @@ public class HomeManager implements ItemManager {
         return home.getId();
     }
 
+    @Override
     public void updateItem(int id) throws UserManagementException {
         Home home = homeService.findById(id);
         HashMap<String, String> homeFields = homeForm();
@@ -46,6 +42,7 @@ public class HomeManager implements ItemManager {
         homeService.update(home);
     }
 
+    @Override
     public void deleteItem(int id) {
         Home home = homeService.findById(id);
         homeService.delete(home);

@@ -1,18 +1,16 @@
 package manager;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import exception.UserManagementException;
 import model.Device;
 import service.DeviceService;
 import service.HomeService;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-public class DeviceManager implements ItemManager {
+public class DeviceManager extends ItemManager {
     private Scanner in = new Scanner(System.in);
     private DeviceService deviceService = new DeviceService();
     private HomeService homeService = new HomeService();
@@ -21,18 +19,12 @@ public class DeviceManager implements ItemManager {
 
     @Override
     public void listItems() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        StringWriter writer = new StringWriter();
-        mapper.writeValue(writer, deviceService.findAll());
-        System.out.println(writer.toString());
+        writeToConsole(deviceService.findAll());
     }
 
     @Override
     public void showItem(int id) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        StringWriter writer = new StringWriter();
-        mapper.writeValue(writer, deviceService.findById(id));
-        System.out.println(writer.toString());
+        writeToConsole(deviceService.findById(id));
     }
 
     @Override
